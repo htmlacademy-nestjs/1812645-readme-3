@@ -1,6 +1,6 @@
 import { UserRole } from './user-role.enum';
 
-export interface UserInterface {
+export interface IUser {
   _id?: string;
   email: string;
   name: string;
