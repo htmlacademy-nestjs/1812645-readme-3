@@ -8,5 +8,8 @@ export class LoggerUserRdo {
   public email: string;
 
   @Expose()
+  public name: string;
+
+  @Expose()
   public accessToken: string;
 }

@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { CRUDRepository } from '@project/util/util-types';
 import { IUser } from '@project/shared/shared-types';
 import { BlogUserEntity } from './blog-user.entity';
