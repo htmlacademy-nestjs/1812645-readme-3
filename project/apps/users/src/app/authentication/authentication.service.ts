@@ -24,7 +24,9 @@ export class AuthenticationService {
     }
 
     const blogUser = {
-      email, name, avatar, passwordHash: '', role: UserRole.User,
+      email, name, avatar,
+      passwordHash: '',
+      role: UserRole.User,
       registrationDate: dayjs().toDate()
     }
 
