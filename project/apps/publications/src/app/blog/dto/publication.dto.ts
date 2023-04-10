@@ -11,19 +11,20 @@ export class PublicationDto {
 
   @ApiProperty({
     description: 'Status of publication. Published or draft',
-    example: 'published'
+    enum: PublicationStatus,
+    example: PublicationStatus.Draft
   })
   public status: PublicationStatus;
 
   @ApiProperty({
-    description: 'Type of publication.',
-    example: '123'
+    description: 'Type of publication. There are five possible types of publications: video, text, quote, photo, link',
+    example: 'video'
   })
   public kindOfPost: string;
 
   @ApiProperty({
-    description: 'Type of publication. There are five possible types of publications.',
-    example: 'video'
+    description: 'The publication itself.',
+    example: '"post": {"link": "Link to super salt.","description": "This is Super!"},'
   })
   public post: PostDtoType;
 
