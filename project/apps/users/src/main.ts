@@ -7,12 +7,15 @@ import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+
+  const configService = app.get(ConfigService);
 
   const configSwagger = new DocumentBuilder()
     .setTitle('The "Users" service')
@@ -23,10 +26,13 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, configSwagger);
   SwaggerModule.setup('spec', app, document);
 
-  const port = process.env.PORT || 3333;
+  const port = configService.get<number>('application.port');
   await app.listen(port);
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
+    `🚀 Application is running on: http://localhost:/${configService.get('application.port')}/${globalPrefix}`
+  );
+  Logger.log(
+    `🎯 Current mode: ${configService.get<string>('application.environment')}`
   );
 }
 
