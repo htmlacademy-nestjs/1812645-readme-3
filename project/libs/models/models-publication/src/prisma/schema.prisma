@@ -1,9 +1,6 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
-  output = "../../../../../node_modules/.prisma/client"
+  output   = "../../../../../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -11,46 +8,65 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum PublicationStatus {
-  PUBLISHED
-  DRAFT
+model Posts {
+  publication_id Int          @unique
+  text_post_id   Int?         @unique
+  video_post_id  Int?         @unique
+
+  publications   Publications @relation(fields: [publication_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_publication_fkey")
+  text_posts     TextPosts?   @relation(fields: [text_post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_text_posts_fkey")
+  video_posts    VideoPosts?  @relation(fields: [video_post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_video_posts_fkey")
+
+  @@map("posts")
 }
 
-model TextPost {
-  id            Int    @id @default(autoincrement())
-  name          String
-  announcement  String
-  text          String
+model Kind {
+  id           Int            @id @default(autoincrement()) @unique
+  type         String         @unique
 
-  Publication Publication?
+  publications Publications[]
+
+  @@map("kind")
+}
+
+model Publications {
+  id                  Int               @id @default(autoincrement())
+  author_id           String
+  date_of_creation    DateTime?         @default(now()) @db.Time(3)
+  date_of_publication DateTime?         @db.Time(3)
+  status              PublicationStatus @default(DRAFT)
+  kind_id             Int
+  post_id             Int               @unique @default(autoincrement())
+
+  kind                Kind              @relation(fields: [kind_id], references: [id], map: "publications_kind_fkey")
+  tags                String[]          @default([])
+  posts               Posts?
+
+  @@map("publications")
+}
+
+model TextPosts {
+  id           Int    @id @default(autoincrement())
+  name         String
+  announcement String
+  text         String
+
+  posts        Posts?
 
   @@map("text_posts")
 }
 
-model VideoPost {
-  id              Int     @id @default(autoincrement())
-  name            String
-  linkToVideo     String  @map("link_to_video")
-
-  Publication Publication?
+model VideoPosts {
+  id            Int    @id @default(autoincrement())
+  name          String
+  link_to_video String
+  
+  posts         Posts?
 
   @@map("video_posts")
 }
 
-model Publication {
-  id                Int               @id @default(autoincrement())
-  authorId          String            @map("author_id")
-  dateOfCreation    DateTime          @default(now()) @map("date_of_creation")
-  dateOfPublication DateTime          @updatedAt  @map("date_of_publication")
-  status            PublicationStatus @default(PUBLISHED)
-  kindOfPost        String            @map("kind_of_post")
-  tags              String[]          @default([])
-
-  videoPost         VideoPost         @relation(fields: [videoPostId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  videoPostId       Int               @unique @map("video_posts_id")
-
-  textPost          TextPost          @relation(fields: [textPostId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  textPostId        Int               @unique @map("text_posts_id")
-
-  @@map("publications")
+enum PublicationStatus {
+  PUBLISHED
+  DRAFT
 }
