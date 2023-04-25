@@ -47,7 +47,7 @@ async function fillDb() {
     where: { id: 1 },
     update: {},
     create: {
-      author_id: 'Mr Bvz',
+      authorId: 'Mr Bvz',
       status: 'DRAFT',
       kind: {
         connect: {
@@ -56,13 +56,12 @@ async function fillDb() {
       },
       posts: {
         create: {
-          video_posts: {
+          videoPosts: {
             create: {
               name: 'This is video.',
-              link_to_video: 'www.google.com',
+              linkToVideo: 'www.google.com',
             }
           },
-          text_posts: {}
         }
       }
     }
@@ -72,7 +71,7 @@ async function fillDb() {
     where: { id: 2 },
     update: {},
     create: {
-      author_id: 'Miss Janet',
+      authorId: 'Miss Janet',
       status: 'PUBLISHED',
       kind: {
         connect: {
@@ -81,8 +80,7 @@ async function fillDb() {
       },
       posts: {
         create: {
-          video_posts: {},
-          text_posts: {
+          textPosts: {
             create: {
               name: 'Force overwrite.',
               announcement: 'Prisma manages the relation table under the hood',
@@ -98,7 +96,7 @@ async function fillDb() {
     where: { id: 3 },
     update: {},
     create: {
-      author_id: 'Luis Carroll',
+      authorId: 'Luis Carroll',
       status: 'DRAFT',
       kind: {
         connect: {
@@ -107,13 +105,12 @@ async function fillDb() {
       },
       posts: {
         create: {
-          video_posts: {
+          videoPosts: {
             create: {
               name: 'Cheshire Cat',
-              link_to_video: 'https://www.youtube.com/watch?v=QSDIziYBsHs',
+              linkToVideo: 'https://www.youtube.com/watch?v=QSDIziYBsHs',
             }
           },
-          text_posts: {}
         }
       }
     }

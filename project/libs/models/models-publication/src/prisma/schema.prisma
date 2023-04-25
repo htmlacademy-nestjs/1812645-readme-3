@@ -8,65 +8,95 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Posts {
-  publication_id Int          @unique
-  text_post_id   Int?         @unique
-  video_post_id  Int?         @unique
-
-  publications   Publications @relation(fields: [publication_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_publication_fkey")
-  text_posts     TextPosts?   @relation(fields: [text_post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_text_posts_fkey")
-  video_posts    VideoPosts?  @relation(fields: [video_post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "post_video_posts_fkey")
-
-  @@map("posts")
-}
-
 model Kind {
-  id           Int            @id @default(autoincrement()) @unique
-  type         String         @unique
+  id            Int     @id @unique @default(autoincrement())
+  type          String  @unique
 
-  publications Publications[]
+  publications  Publications[]
 
   @@map("kind")
 }
 
-model Publications {
-  id                  Int               @id @default(autoincrement())
-  author_id           String
-  date_of_creation    DateTime?         @default(now()) @db.Time(3)
-  date_of_publication DateTime?         @db.Time(3)
-  status              PublicationStatus @default(DRAFT)
-  kind_id             Int
-  post_id             Int               @unique @default(autoincrement())
+model Posts {
+  publicationId Int            @unique @map("publication_id")
+  videoPostId   Int?           @unique @map("video_post_id")
+  textPostId    Int?           @unique @map("text_post_id")
+  quotePostId   Int?           @unique @map("quote_post_id")
+  photoPostId   Int?           @unique @map("photo_post_id")
+  linkPostId    Int?           @unique @map("link_post_id")
 
-  kind                Kind              @relation(fields: [kind_id], references: [id], map: "publications_kind_fkey")
-  tags                String[]          @default([])
-  posts               Posts?
+  publications  Publications @relation(fields: [publicationId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "post_publication_fkey")
+  videoPosts    VideoPosts?  @relation(fields: [videoPostId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "post_video_posts_fkey")
+  textPosts     TextPosts?   @relation(fields: [textPostId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "post_text_posts_fkey")
+  quotePosts    QuotePosts?  @relation(fields: [quotePostId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "post_quote_posts_fkey")
+  photoPosts    PhotoPosts?  @relation(fields: [photoPostId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "post_photo_posts_fkey")
+  linkPosts     LinkPosts?   @relation(fields: [photoPostId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "post_link_posts_fkey")
+
+  @@map("posts")
+}
+
+model Publications {
+  id                Int       @id @default(autoincrement())
+  authorId          String    @map("author_id")
+  dateOfCreation    DateTime  @default(now()) @map("date_of_creation")
+  dateOfPublication DateTime? @map("date_of_publication")
+  status            String
+  kindId            Int       @map("kind_id")
+  postId            Int       @unique @default(autoincrement()) @map("post_id")
+
+  kind  Kind        @relation(fields: [kindId], references: [id], map: "publications_kind_fkey")
+  tags  String[]    @default([])
+  posts Posts?
 
   @@map("publications")
 }
 
-model TextPosts {
-  id           Int    @id @default(autoincrement())
-  name         String
-  announcement String
-  text         String
-
-  posts        Posts?
-
-  @@map("text_posts")
-}
-
 model VideoPosts {
-  id            Int    @id @default(autoincrement())
+  id            Int     @id @default(autoincrement())
   name          String
-  link_to_video String
-  
+  linkToVideo   String  @map("link_to_video")
+
   posts         Posts?
 
   @@map("video_posts")
 }
 
-enum PublicationStatus {
-  PUBLISHED
-  DRAFT
+model TextPosts {
+  id            Int    @id @default(autoincrement())
+  name          String
+  announcement  String
+  text          String
+
+  posts         Posts?
+
+  @@map("text_posts")
+}
+
+model QuotePosts {
+  id              Int    @id @default(autoincrement())
+  text            String
+  authorOfQuoteId String
+
+  posts           Posts?
+
+  @@map("quote_posts")
+}
+
+model PhotoPosts {
+  id            Int    @id @default(autoincrement())
+  linkToPhoto   String
+
+  posts         Posts?
+
+  @@map("photo_posts")
+}
+
+model LinkPosts {
+  id            Int    @id @default(autoincrement())
+  link          String
+  description   String
+
+  posts         Posts?
+
+  @@map("link_posts")
 }

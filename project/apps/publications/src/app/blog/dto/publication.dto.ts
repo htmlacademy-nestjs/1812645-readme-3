@@ -20,13 +20,13 @@ export class PublicationDto {
     description: 'Type of publication. There are five possible types of publications: video, text, quote, photo, link',
     example: 'video'
   })
-  public kindOfPost: string;
+  public kindId: number;
 
   @ApiProperty({
     description: 'The publication itself.',
     example: '"post": {"link": "Link to super salt.","description": "This is Super!"},'
   })
-  public post: PostDtoType;
+  public posts: PostDtoType;
 
   @ApiProperty({
     description: 'The tag for publication. The maximum number of tags is 8 pieces.',
