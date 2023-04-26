@@ -43,17 +43,11 @@ async function fillDb() {
     }
   });
 
-  await prisma.publications.upsert({
-    where: { id: 1 },
-    update: {},
-    create: {
+  await prisma.publications.create({
+    data: {
       authorId: 'Mr Bvz',
       status: 'DRAFT',
-      kind: {
-        connect: {
-          id: 1,
-        }
-      },
+      kindId: 1,
       posts: {
         create: {
           videoPosts: {
@@ -73,11 +67,7 @@ async function fillDb() {
     create: {
       authorId: 'Miss Janet',
       status: 'PUBLISHED',
-      kind: {
-        connect: {
-          id: 2,
-        }
-      },
+      kindId: 2,
       posts: {
         create: {
           textPosts: {
@@ -98,11 +88,7 @@ async function fillDb() {
     create: {
       authorId: 'Luis Carroll',
       status: 'DRAFT',
-      kind: {
-        connect: {
-          id: 1,
-        }
-      },
+      kindId: 1,
       posts: {
         create: {
           videoPosts: {

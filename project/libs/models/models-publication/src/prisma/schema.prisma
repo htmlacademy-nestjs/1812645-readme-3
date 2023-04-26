@@ -9,8 +9,8 @@ datasource db {
 }
 
 model Kind {
-  id            Int     @id @unique @default(autoincrement())
-  type          String  @unique
+  id            Int         @id @unique @default(autoincrement())
+  type          String      @unique
 
   publications  Publications[]
 
@@ -18,19 +18,15 @@ model Kind {
 }
 
 model Posts {
-  publicationId Int            @unique @map("publication_id")
-  videoPostId   Int?           @unique @map("video_post_id")
-  textPostId    Int?           @unique @map("text_post_id")
-  quotePostId   Int?           @unique @map("quote_post_id")
-  photoPostId   Int?           @unique @map("photo_post_id")
-  linkPostId    Int?           @unique @map("link_post_id")
+  id            Int          @id @default(autoincrement())
+  publicationId Int          @unique @map("publication_id")
 
   publications  Publications @relation(fields: [publicationId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "post_publication_fkey")
-  videoPosts    VideoPosts?  @relation(fields: [videoPostId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "post_video_posts_fkey")
-  textPosts     TextPosts?   @relation(fields: [textPostId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "post_text_posts_fkey")
-  quotePosts    QuotePosts?  @relation(fields: [quotePostId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "post_quote_posts_fkey")
-  photoPosts    PhotoPosts?  @relation(fields: [photoPostId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "post_photo_posts_fkey")
-  linkPosts     LinkPosts?   @relation(fields: [photoPostId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "post_link_posts_fkey")
+  videoPosts    VideoPosts?
+  textPosts     TextPosts?
+  quotePosts    QuotePosts?
+  photoPosts    PhotoPosts?
+  linkPosts     LinkPosts?
 
   @@map("posts")
 }
@@ -42,61 +38,65 @@ model Publications {
   dateOfPublication DateTime? @map("date_of_publication")
   status            String
   kindId            Int       @map("kind_id")
-  postId            Int       @unique @default(autoincrement()) @map("post_id")
+  tags              String[]  @default([])
 
-  kind  Kind        @relation(fields: [kindId], references: [id], map: "publications_kind_fkey")
-  tags  String[]    @default([])
-  posts Posts?
+  kind              Kind      @relation(fields: [kindId], references: [id], map: "publications_kind_fkey")
+  posts             Posts?
 
   @@map("publications")
 }
 
 model VideoPosts {
-  id            Int     @id @default(autoincrement())
+  id            Int           @id @default(autoincrement())
+  postsId       Int           @unique @map("[posts_id]")
   name          String
-  linkToVideo   String  @map("link_to_video")
+  linkToVideo   String        @map("link_to_video")
 
-  posts         Posts?
+  posts         Posts         @relation(fields: [postsId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "video_posts_posts_fkey")
 
   @@map("video_posts")
 }
 
 model TextPosts {
-  id            Int    @id @default(autoincrement())
+  id            Int     @id @default(autoincrement())
+  postsId       Int     @unique @map("[posts_id]")
   name          String
   announcement  String
   text          String
 
-  posts         Posts?
+  posts         Posts   @relation(fields: [postsId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "text_posts_posts_fkey")
 
   @@map("text_posts")
 }
 
 model QuotePosts {
-  id              Int    @id @default(autoincrement())
+  id              Int     @id @default(autoincrement())
+  postsId         Int     @unique @map("[posts_id]")
   text            String
   authorOfQuoteId String
 
-  posts           Posts?
+  posts           Posts?  @relation(fields: [postsId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "quote_posts_posts_fkey")
 
   @@map("quote_posts")
 }
 
 model PhotoPosts {
-  id            Int    @id @default(autoincrement())
+  id            Int     @id @default(autoincrement())
+  postsId       Int     @unique @map("[posts_id]")
   linkToPhoto   String
 
-  posts         Posts?
+  posts         Posts?  @relation(fields: [postsId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "photo_posts_posts_fkey")
 
   @@map("photo_posts")
 }
 
 model LinkPosts {
   id            Int    @id @default(autoincrement())
+  postsId       Int    @unique @map("[posts_id]")
   link          String
   description   String
 
-  posts         Posts?
+  posts         Posts?  @relation(fields: [postsId], references: [id], onDelete: Cascade, onUpdate: Cascade, map: "link_posts_posts_fkey")
 
   @@map("link_posts")
 }

@@ -1,27 +1,45 @@
 import dayjs from 'dayjs';
 import { IPublication, PostsTypes, PublicationStatus } from '@project/shared/shared-types';
 import { PostFactory } from '../post.factory';
+import { IEntity } from '@project/util/util-types';
 
-export class PublicationEntity implements IPublication {
+export class PublicationEntity implements IEntity<PublicationEntity>, IPublication {
   public _id?: string;
   public authorId: string;
   public dateOfCreation: Date;
   public dateOfPublication: Date;
   public status: PublicationStatus;
-  public kindOfPost: string;
-  public post: PostsTypes;
+  public kindId: number;
+  public posts: PostsTypes;
   public tags?: string[];
 
   constructor(publication: IPublication) {
-    const {kindOfPost, post} = publication;
+    const {kindId, posts} = publication;
 
-    const newPost = PostFactory.createPost(kindOfPost, post);
+    const newPost = PostFactory.createPost(kindId, posts);
 
     this._id = publication._id;
     this.authorId = publication.authorId;
     this.status = publication.status;
-    this.kindOfPost = publication.kindOfPost;
-    this.post = newPost;
+    this.kindId = publication.kindId;
+    this.posts = newPost;
+    this.tags = publication.tags;
+  }
+
+  toObject(): PublicationEntity {
+    return { ...this };
+  }
+
+  fillEntity(publication: IPublication): void {
+    const {kindId, posts} = publication;
+
+    const newPost = PostFactory.createPost(kindId, posts);
+
+    this._id = publication._id;
+    this.authorId = publication.authorId;
+    this.status = publication.status;
+    this.kindId = publication.kindId;
+    this.posts = newPost;
     this.tags = publication.tags;
   }
 

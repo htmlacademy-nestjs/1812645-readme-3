@@ -1,19 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { PublicationMemoryRepository } from './publication-memory.repository';
 import { PublicationDto } from './dto/publication.dto';
 import { PublicationEntity } from './entity/publication.entity';
+import { PublicationRepository } from './publication.repository';
+import { IPublication } from '@project/shared/shared-types';
 
 @Injectable()
 export class PublicationService {
-  constructor(private readonly postRepository: PublicationMemoryRepository) {}
+  constructor(private readonly publicationRepository: PublicationRepository) {}
 
-  public async create(dto: PublicationDto) {
-    // TODO Проверка на существование автора
-    const newPost = new PublicationEntity(dto)
+  public async createPublication(dto: PublicationDto) {
+    const newPublicationEntity = new PublicationEntity(dto)
       .setStatus(dto.status)
       .setDateOfCreation()
       .setDateOfPublication();
 
-    return this.postRepository.create(newPost);
+    return this.publicationRepository.create(newPublicationEntity);
+  }
+
+  async getPublication(id: number): Promise<IPublication> | null {
+    return this.publicationRepository.findById(id);
+  }
+
+  async deletePublication(id: number): Promise<void> {
+    return this.publicationRepository.destroy(id);
   }
 }

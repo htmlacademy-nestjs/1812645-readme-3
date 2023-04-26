@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { PublicationController } from './publication.controller';
 import { PublicationService } from './publication.service';
-import { PublicationMemoryRepository } from './publication-memory.repository';
+import { PublicationRepository } from './publication.repository';
 
 @Module({
   imports: [],
   controllers: [PublicationController],
-  providers: [PublicationService, PublicationMemoryRepository],
+  providers: [PublicationService, PublicationRepository],
 })
 export class BlogModule {}
