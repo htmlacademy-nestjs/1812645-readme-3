@@ -14,6 +14,12 @@ async function fillDb() {
         name: 'This is video.',
         linkToVideo: 'www.google.com',
       },
+      comments: {
+        create: {
+          text: 'Во 2 пункте.',
+          userId: '1',
+        },
+      }
     }
   });
 
@@ -55,6 +61,12 @@ async function fillDb() {
       kindId: 4,
       post: {
         linkToPhoto: 'https://yandex.ru/images/search?from',
+      },
+      comments: {
+        create: {
+          text: 'По 3 пункту нашел.',
+          userId: '13',
+        },
       }
     }
   });
@@ -70,6 +82,12 @@ async function fillDb() {
         description: 'Cheshire Cat',
         link: 'https://www.youtube.com/watch?v=QSDIziYBsHs',
       },
+      comments: {
+        create: {
+          text: 'По 3 пункту нашел.',
+          userId: '13',
+        },
+      }
     }
   });
 
