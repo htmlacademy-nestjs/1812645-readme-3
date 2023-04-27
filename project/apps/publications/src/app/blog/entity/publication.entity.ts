@@ -8,21 +8,21 @@ export class PublicationEntity implements IEntity<PublicationEntity>, IPublicati
   public authorId: string;
   public dateOfCreation: Date;
   public dateOfPublication: Date;
-  public status: PublicationStatus;
+  public status: string;
   public kindId: number;
-  public posts: PostsTypes;
+  public post: PostsTypes;
   public tags?: string[];
 
   constructor(publication: IPublication) {
-    const {kindId, posts} = publication;
+    const {kindId, post} = publication;
 
-    const newPost = PostFactory.createPost(kindId, posts);
+    const newPost = PostFactory.createPost(kindId, post);
 
     this._id = publication._id;
     this.authorId = publication.authorId;
     this.status = publication.status;
     this.kindId = publication.kindId;
-    this.posts = newPost;
+    this.post = newPost;
     this.tags = publication.tags;
   }
 
@@ -31,15 +31,15 @@ export class PublicationEntity implements IEntity<PublicationEntity>, IPublicati
   }
 
   fillEntity(publication: IPublication): void {
-    const {kindId, posts} = publication;
+    const {kindId, post} = publication;
 
-    const newPost = PostFactory.createPost(kindId, posts);
+    const newPost = PostFactory.createPost(kindId, post);
 
     this._id = publication._id;
     this.authorId = publication.authorId;
     this.status = publication.status;
     this.kindId = publication.kindId;
-    this.posts = newPost;
+    this.post = newPost;
     this.tags = publication.tags;
   }
 
@@ -50,7 +50,7 @@ export class PublicationEntity implements IEntity<PublicationEntity>, IPublicati
   }
 
   public setDateOfPublication() {
-    if(this.status === PublicationStatus.Published) {
+    if(this.status === PublicationStatus.PUBLISHED) {
       this.dateOfPublication = dayjs().toDate();
     } else {
       this.dateOfPublication = null;
@@ -60,10 +60,10 @@ export class PublicationEntity implements IEntity<PublicationEntity>, IPublicati
   }
 
   public setStatus(status: string) {
-    if(status === PublicationStatus.Published) {
-      this.status = PublicationStatus.Published;
+    if(status === PublicationStatus.PUBLISHED) {
+      this.status = PublicationStatus.PUBLISHED;
     } else {
-      this.status = PublicationStatus.Draft;
+      this.status = PublicationStatus.DRAFT;
     }
 
     return this;
