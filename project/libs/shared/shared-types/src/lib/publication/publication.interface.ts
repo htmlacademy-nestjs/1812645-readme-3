@@ -9,4 +9,5 @@ export type IPublication = {
   kindId: number,
   post: PostsTypes,
   tags?: string[];
+  comments?: Comment[];
 }
