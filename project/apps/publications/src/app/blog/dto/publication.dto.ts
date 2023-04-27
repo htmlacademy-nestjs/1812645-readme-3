@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { PublicationStatus } from '@project/shared/shared-types';
 import { PostDtoType } from './post-dto.type';
+import { PublicationStatus } from '@project/shared/shared-types';
 
 export class PublicationDto {
   @ApiProperty({
@@ -12,7 +12,7 @@ export class PublicationDto {
   @ApiProperty({
     description: 'Status of publication. Published or draft',
     enum: PublicationStatus,
-    example: PublicationStatus.Draft
+    example: PublicationStatus.DRAFT
   })
   public status: PublicationStatus;
 
@@ -26,7 +26,7 @@ export class PublicationDto {
     description: 'The publication itself.',
     example: '"post": {"link": "Link to super salt.","description": "This is Super!"},'
   })
-  public posts: PostDtoType;
+  public post: PostDtoType;
 
   @ApiProperty({
     description: 'The tag for publication. The maximum number of tags is 8 pieces.',
