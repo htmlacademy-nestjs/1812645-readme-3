@@ -1,5 +1,4 @@
-import dayjs from 'dayjs';
-import { IPublication, PostsTypes, PublicationStatus } from '@project/shared/shared-types';
+import { IComment, IPublication, PostsTypes, PublicationStatus } from '@project/shared/shared-types';
 import { PostFactory } from '../post.factory';
 import { IEntity } from '@project/util/util-types';
 
@@ -12,6 +11,7 @@ export class PublicationEntity implements IEntity<PublicationEntity>, IPublicati
   public kindId: number;
   public post: PostsTypes;
   public tags?: string[];
+  public comments: IComment[];
 
   constructor(publication: IPublication) {
     const {kindId, post} = publication;
@@ -20,14 +20,21 @@ export class PublicationEntity implements IEntity<PublicationEntity>, IPublicati
 
     this._id = publication._id;
     this.authorId = publication.authorId;
-    this.status = publication.status;
+    this.status = this.setStatus(publication.status);
+    this.dateOfCreation = new Date();
+    this.dateOfPublication = (this.status === PublicationStatus.PUBLISHED) ? new Date() : null;
     this.kindId = publication.kindId;
     this.post = newPost;
     this.tags = publication.tags;
+    this.comments = [];
   }
 
   toObject(): PublicationEntity {
-    return { ...this };
+    return {
+      ...this,
+      comments: [this.comments],
+      post: {...this.post},
+    };
   }
 
   fillEntity(publication: IPublication): void {
@@ -43,29 +50,13 @@ export class PublicationEntity implements IEntity<PublicationEntity>, IPublicati
     this.tags = publication.tags;
   }
 
-  public setDateOfCreation() {
-    this.dateOfCreation = dayjs().toDate();
+  public setStatus(st: string) {
+    let status = PublicationStatus.DRAFT;
 
-    return this;
-  }
-
-  public setDateOfPublication() {
-    if(this.status === PublicationStatus.PUBLISHED) {
-      this.dateOfPublication = dayjs().toDate();
-    } else {
-      this.dateOfPublication = null;
+    if(st === PublicationStatus.PUBLISHED) {
+      status = PublicationStatus.PUBLISHED;
     }
 
-    return this;
-  }
-
-  public setStatus(status: string) {
-    if(status === PublicationStatus.PUBLISHED) {
-      this.status = PublicationStatus.PUBLISHED;
-    } else {
-      this.status = PublicationStatus.DRAFT;
-    }
-
-    return this;
+    return status;
   }
 }
