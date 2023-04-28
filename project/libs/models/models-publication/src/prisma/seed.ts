@@ -15,10 +15,16 @@ async function fillDb() {
         linkToVideo: 'www.google.com',
       },
       comments: {
-        create: {
-          text: 'Во 2 пункте.',
-          userId: '1',
-        },
+        create: [
+          {
+            text: 'Есть гениальная идея!',
+            userId: '1',
+          },
+          {
+            text: 'Это вы вчера звонили по поводу авоськи?',
+            userId: '1',
+          },
+        ]
       }
     }
   });
@@ -46,7 +52,7 @@ async function fillDb() {
       status: 'PUBLISHED',
       kindId: 3,
       post: {
-        text: 'The following properties of the schema are determined by the database.',
+        text: 'Не звоните сюда больше, это квартира!',
         authorOfQuoteId: 'Force overwrite.',
       }
     }
@@ -64,7 +70,7 @@ async function fillDb() {
       },
       comments: {
         create: {
-          text: 'По 3 пункту нашел.',
+          text: 'Все учесть невозможно!',
           userId: '13',
         },
       }
@@ -84,7 +90,7 @@ async function fillDb() {
       },
       comments: {
         create: {
-          text: 'По 3 пункту нашел.',
+          text: 'Мы согласовали!',
           userId: '13',
         },
       }

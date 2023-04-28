@@ -15,10 +15,9 @@ model Publications {
   dateOfPublication DateTime?         @map("date_of_publication")
   status            String            @default("PUBLISHED")
   kindId            Int               @map("kind_id")
+  post              Json              @default("{}")
   tags              String[]          @default([])
   comments          Comments[]
-
-  post              Json              @default("{}")
 
   @@map("publications")
 }
@@ -27,7 +26,7 @@ model Comments {
   id                Int               @id @default(autoincrement())
   createdAt         DateTime          @default(now()) @map("created_at")
   updatedAt         DateTime?         @map("updated_at")
-  publicationId     Int               @unique @map("publication_id")
+  publicationId     Int               @map("publication_id")
   text              String
   userId            String            @map("user_id")
 
