@@ -25,6 +25,13 @@ async function fillDb() {
             userId: '1',
           },
         ]
+      },
+      likes: {
+        create: [
+          { userId: '5' },
+          { userId: '8' },
+          { userId: '5' },
+        ]
       }
     }
   });
