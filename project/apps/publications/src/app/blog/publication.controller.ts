@@ -21,13 +21,13 @@ export class PublicationController {
   }
 
   @Get('/')
-  async index() {
+  async readAll() {
     const posts = await this.publicationService.getPublications();
     return fillObject(PublicationRdo, posts);
   }
 
   @Patch('/:id')
-  async update(@Param('id') id: number, @Body() dto: UpdatePublicationDto) {
+  async update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdatePublicationDto) {
     const updatedPost = await this.publicationService.updatePublication(id, dto);
     return fillObject(PublicationRdo, updatedPost)
   }

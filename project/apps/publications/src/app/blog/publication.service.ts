@@ -29,12 +29,9 @@ export class PublicationService {
   async getPublications(): Promise<IPublication[]> {
     const publications = await this.publicationRepository.find();
 
-    const newPublications = publications.map((publication) => {
+    return publications.map((publication) => {
       return convertPostFromJsonToObject(publication);
     });
-
-    console.log("* Get All Service * ", publications);
-    return newPublications;
   }
 
   async updatePublication(_id: number, _dto: UpdatePublicationDto): Promise<IPublication> {

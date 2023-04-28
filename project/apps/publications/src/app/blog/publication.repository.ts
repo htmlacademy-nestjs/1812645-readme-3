@@ -11,24 +11,22 @@ export class PublicationRepository implements CRUDRepository<PublicationEntity, 
   public async create(item: PublicationEntity): Promise<Publications> | null {
     const {post, ...base} = item;
 
-    const publication = await this.prisma.publications.create({
+    return await this.prisma.publications.create({
       data: {
         ...base,
         post: { ...post },
         comments: {},
       }
     });
-    return publication;
   }
 
   public async findById(id: number): Promise<Publications> | null {
-    const publication = await this.prisma.publications.findFirst({
+    return await this.prisma.publications.findFirst({
       where: { id },
       include: {
         comments: true
       }
     });
-    return publication;
   }
 
   public async find(): Promise<Publications[]> {
