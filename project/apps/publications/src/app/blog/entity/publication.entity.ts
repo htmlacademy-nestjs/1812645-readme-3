@@ -1,4 +1,4 @@
-import { IComment, IPublication, PostsTypes, PublicationStatus } from '@project/shared/shared-types';
+import { IComment, ILike, IPublication, ITag, PostsTypes, PublicationStatus } from '@project/shared/shared-types';
 import { PostFactory } from '../post.factory';
 import { IEntity } from '@project/util/util-types';
 
@@ -10,8 +10,9 @@ export class PublicationEntity implements IEntity<PublicationEntity>, IPublicati
   public status: string;
   public kindId: number;
   public post: PostsTypes;
-  public tags?: string[];
+  public tags: ITag[];
   public comments: IComment[];
+  public likes: ILike[];
 
   constructor(publication: IPublication) {
     const {kindId, post} = publication;
@@ -24,16 +25,17 @@ export class PublicationEntity implements IEntity<PublicationEntity>, IPublicati
     this.dateOfCreation = new Date();
     this.dateOfPublication = (this.status === PublicationStatus.PUBLISHED) ? new Date() : null;
     this.kindId = publication.kindId;
-    this.post = newPost;
-    this.tags = publication.tags;
-    this.comments = [];
+    this.post = newPost;    // TODO через ... !!!
+    this.tags = [ ...publication.tags ];
   }
 
   toObject(): PublicationEntity {
     return {
       ...this,
-      comments: [this.comments],
-      post: {...this.post},
+      post: { ...this.post },
+      tags: [ ...this.tags ],
+      comments: [ ...this.comments ],
+      likes: [ ...this.likes ]
     };
   }
 

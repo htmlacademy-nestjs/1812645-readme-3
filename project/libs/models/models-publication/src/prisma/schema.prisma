@@ -48,7 +48,7 @@ model Likes {
 
 model Tags {
   id                Int               @id @default(autoincrement())
-  title             String
+  title             String            @unique
 
   publication       Publications[]
 

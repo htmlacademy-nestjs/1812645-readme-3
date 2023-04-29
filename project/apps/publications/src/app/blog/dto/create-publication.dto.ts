@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { PostDtoType } from './post-dto.type';
-import { IComment, PublicationStatus } from '@project/shared/shared-types';
+import { ITag, PublicationStatus } from '@project/shared/shared-types';
 
 export class CreatePublicationDto {
   @ApiProperty({
@@ -32,11 +32,5 @@ export class CreatePublicationDto {
     description: 'The tag for publication. The maximum number of tags is 8 pieces.',
     example: '["project", "design"]'
   })
-  public tags?: string[];
-
-  @ApiProperty({
-    description: 'The tag for publication. The maximum number of tags is 8 pieces.',
-    example: ''
-  })
-  public comments?: IComment[];
+  public tags?: ITag[];
 }
