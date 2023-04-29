@@ -16,7 +16,7 @@ model Publications {
   status            String            @default("PUBLISHED")
   kindId            Int               @map("kind_id")
   post              Json              @default("{}")
-  tags              String[]          @default([])
+  tags              Tags[]
   comments          Comments[]
   likes             Likes[]
 
@@ -44,4 +44,13 @@ model Likes {
   publication       Publications      @relation(fields: [publicationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@map("likes")
+}
+
+model Tags {
+  id                Int               @id @default(autoincrement())
+  title             String
+
+  publication       Publications[]
+
+  @@map("tags")
 }

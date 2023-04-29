@@ -7,12 +7,19 @@ async function fillDb() {
     where: { id: 1 },
     update: {},
     create: {
-      authorId: 'Mr Bvz',
+      authorId: '23',
       status: 'DRAFT',
       kindId: 1,
       post: {
         name: 'This is video.',
         linkToVideo: 'www.google.com',
+      },
+      tags: {
+        create: [
+          { title: 'Семья' },
+          { title: 'Работа' },
+          { title: 'Бега' }
+        ]
       },
       comments: {
         create: [
@@ -40,14 +47,20 @@ async function fillDb() {
     where: { id: 2 },
     update: {},
     create: {
-      authorId: 'Miss Janet',
+      authorId: '56',
       status: 'PUBLISHED',
       kindId: 2,
       post: {
-        name: 'Force overwrite.',
-        announcement: 'Prisma manages the relation table under the hood',
-        text: 'The following properties of the schema are determined by the database.',
-      }
+        name: 'Задача стоит!',
+        announcement: 'Взяли на работу, терпите!',
+        text: 'Всюду жизнь, творчество, креатив.',
+      },
+      tags: {
+        create: [
+          { title: 'CS-GO' },
+          { title: 'Охота' }
+        ]
+      },
     }
   });
 
@@ -55,13 +68,16 @@ async function fillDb() {
     where: { id: 3 },
     update: {},
     create: {
-      authorId: 'Miss Janet',
+      authorId: '13',
       status: 'PUBLISHED',
       kindId: 3,
       post: {
         text: 'Не звоните сюда больше, это квартира!',
         authorOfQuoteId: 'Force overwrite.',
-      }
+      },
+      tags: {
+        create: { title: 'Котики' },
+      },
     }
   });
 
@@ -69,7 +85,7 @@ async function fillDb() {
     where: { id: 4 },
     update: {},
     create: {
-      authorId: 'Miss Janet',
+      authorId: '456',
       status: 'PUBLISHED',
       kindId: 4,
       post: {

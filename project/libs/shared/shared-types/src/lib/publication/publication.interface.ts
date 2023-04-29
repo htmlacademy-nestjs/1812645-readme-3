@@ -1,4 +1,4 @@
-import { IComment, PostsTypes } from '@project/shared/shared-types';
+import { IComment, ILike, ITag, PostsTypes } from '@project/shared/shared-types';
 
 export type IPublication = {
   _id?: string;
@@ -8,6 +8,7 @@ export type IPublication = {
   status: string;
   kindId: number,
   post: PostsTypes,
-  tags?: string[];
+  tags?: ITag[];
   comments?: IComment[];
+  likes?: ILike[];
 }
