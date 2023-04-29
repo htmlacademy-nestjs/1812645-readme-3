@@ -1,19 +1,50 @@
 import { Injectable } from '@nestjs/common';
-import { PublicationMemoryRepository } from './publication-memory.repository';
-import { PublicationDto } from './dto/publication.dto';
+import { CreatePublicationDto } from './dto/create-publication.dto';
 import { PublicationEntity } from './entity/publication.entity';
+import { PublicationRepository } from './publication.repository';
+import { IPublication, PostsTypes } from '@project/shared/shared-types';
+import { fillObject } from '@project/util/util-core';
+import { postRdoMap } from './rdo/post-rdo.map';
+import { UpdatePublicationDto } from './dto/update-publication.dto';
+import { Publications } from '@prisma/client';
 
 @Injectable()
 export class PublicationService {
-  constructor(private readonly postRepository: PublicationMemoryRepository) {}
+  constructor(private readonly publicationRepository: PublicationRepository) {}
 
-  public async create(dto: PublicationDto) {
-    // TODO Проверка на существование автора
-    const newPost = new PublicationEntity(dto)
-      .setStatus(dto.status)
-      .setDateOfCreation()
-      .setDateOfPublication();
-
-    return this.postRepository.create(newPost);
+  async createPublication(dto: CreatePublicationDto) {
+    const newPublicationEntity = new PublicationEntity(dto);
+    return this.publicationRepository.create(newPublicationEntity);
   }
+
+  async getPublication(id: number): Promise<IPublication> | null {
+    const publication = await this.publicationRepository.findById(id);
+
+    if(!publication) {
+      return null;
+    }
+    return convertPostFromJsonToObject(publication);
+  }
+
+  async getPublications(): Promise<IPublication[]> {
+    const publications = await this.publicationRepository.find();
+
+    return publications.map((publication) => {
+      return convertPostFromJsonToObject(publication);
+    });
+  }
+
+  async updatePublication(_id: number, _dto: UpdatePublicationDto): Promise<IPublication> {
+    throw new Error('Not implemented…');
+  }
+
+  async deletePublication(id: number): Promise<void> {
+    return this.publicationRepository.destroy(id);
+  }
+}
+
+function convertPostFromJsonToObject(publication: Publications): IPublication {
+  const {post, ...base} = publication;
+  const newPost: PostsTypes = fillObject(postRdoMap[base.kindId], post);
+  return {...base, post: newPost}
 }

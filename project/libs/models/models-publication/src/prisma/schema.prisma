@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../../../../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Publications {
+  id                Int               @id @default(autoincrement())
+  authorId          String            @map("author_id")
+  dateOfCreation    DateTime          @default(now()) @map("date_of_creation")
+  dateOfPublication DateTime?         @map("date_of_publication")
+  status            String            @default("PUBLISHED")
+  kindId            Int               @map("kind_id")
+  post              Json              @default("{}")
+  tags              Tags[]
+  comments          Comments[]
+  likes             Likes[]
+
+  @@map("publications")
+}
+
+model Comments {
+  id                Int               @id @default(autoincrement())
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime?         @map("updated_at")
+  publicationId     Int               @map("publication_id")
+  text              String
+  userId            String            @map("user_id")
+
+  publication       Publications      @relation(fields: [publicationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("comments")
+}
+
+model Likes {
+  id                Int               @id @default(autoincrement())
+  userId            String            @map("user_id")
+  publicationId     Int               @map("publication_id")
+
+  publication       Publications      @relation(fields: [publicationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("likes")
+}
+
+model Tags {
+  id                Int               @id @default(autoincrement())
+  title             String
+
+  publication       Publications[]
+
+  @@map("tags")
+}

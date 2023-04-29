@@ -1,0 +1,42 @@
+version: '3.5'
+services:
+  readme.publications.postgres:
+    image: postgres:14-alpine
+    container_name: readme.publications.postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: publications
+    ports:
+      - 5432:5432
+    volumes:
+      - readme.postgres.publications:/var/lib/postgresql/data
+
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin -d test" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+    networks:
+      - readme.publications
+
+  readme.publications.pgadmin:
+    image: dpage/pgadmin4
+    container_name: readme.publications.pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "lmarch@mail.ru"
+      PGADMIN_DEFAULT_PASSWORD: "test"
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - 8082:80
+    networks:
+      - readme.publications
+
+volumes:
+  readme.postgres.publications:
+
+networks:
+  readme.publications:
+      driver: bridge

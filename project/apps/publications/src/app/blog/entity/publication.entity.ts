@@ -1,53 +1,62 @@
-import dayjs from 'dayjs';
-import { IPublication, PostsTypes, PublicationStatus } from '@project/shared/shared-types';
+import { IComment, IPublication, PostsTypes, PublicationStatus } from '@project/shared/shared-types';
 import { PostFactory } from '../post.factory';
+import { IEntity } from '@project/util/util-types';
 
-export class PublicationEntity implements IPublication {
+export class PublicationEntity implements IEntity<PublicationEntity>, IPublication {
   public _id?: string;
   public authorId: string;
   public dateOfCreation: Date;
   public dateOfPublication: Date;
-  public status: PublicationStatus;
-  public kindOfPost: string;
+  public status: string;
+  public kindId: number;
   public post: PostsTypes;
   public tags?: string[];
+  public comments: IComment[];
 
   constructor(publication: IPublication) {
-    const {kindOfPost, post} = publication;
+    const {kindId, post} = publication;
 
-    const newPost = PostFactory.createPost(kindOfPost, post);
+    const newPost = PostFactory.createPost(kindId, post);
+
+    this._id = publication._id;
+    this.authorId = publication.authorId;
+    this.status = this.setStatus(publication.status);
+    this.dateOfCreation = new Date();
+    this.dateOfPublication = (this.status === PublicationStatus.PUBLISHED) ? new Date() : null;
+    this.kindId = publication.kindId;
+    this.post = newPost;
+    this.tags = publication.tags;
+    this.comments = [];
+  }
+
+  toObject(): PublicationEntity {
+    return {
+      ...this,
+      comments: [this.comments],
+      post: {...this.post},
+    };
+  }
+
+  fillEntity(publication: IPublication): void {
+    const {kindId, post} = publication;
+
+    const newPost = PostFactory.createPost(kindId, post);
 
     this._id = publication._id;
     this.authorId = publication.authorId;
     this.status = publication.status;
-    this.kindOfPost = publication.kindOfPost;
+    this.kindId = publication.kindId;
     this.post = newPost;
     this.tags = publication.tags;
   }
 
-  public setDateOfCreation() {
-    this.dateOfCreation = dayjs().toDate();
+  public setStatus(st: string) {
+    let status = PublicationStatus.DRAFT;
 
-    return this;
-  }
-
-  public setDateOfPublication() {
-    if(this.status === PublicationStatus.Published) {
-      this.dateOfPublication = dayjs().toDate();
-    } else {
-      this.dateOfPublication = null;
+    if(st === PublicationStatus.PUBLISHED) {
+      status = PublicationStatus.PUBLISHED;
     }
 
-    return this;
-  }
-
-  public setStatus(status: string) {
-    if(status === PublicationStatus.Published) {
-      this.status = PublicationStatus.Published;
-    } else {
-      this.status = PublicationStatus.Draft;
-    }
-
-    return this;
+    return status;
   }
 }
