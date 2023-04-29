@@ -17,19 +17,18 @@ export class CommentController {
 
   @Get('/:id')
   async read(@Param('id', ParseIntPipe) id: number) {
-    const comment = this.commentService.getComment(id);
+    const comment = await this.commentService.getComment(id);
     return fillObject(CommentRdo, comment);
   }
 
   @Get('/post/:id')
-  async readAll(@Param('id', ParseIntPipe) publicationId: number) {
-    const comments = await this.commentService.getComments(publicationId);
+  async readAllCommentsOfPublication(@Param('id', ParseIntPipe) publicationId: number) {
+    const comments = await this.commentService.getCommentsOfPublicationId(publicationId);
     return fillObject(CommentRdo, comments);
   }
 
   @Patch('/:id')
   async update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateCommentDto) {
-    console.log("* Patch Controller *", dto);
     const comment = await this.commentService.updateComment(id, dto);
     return fillObject(CommentRdo, comment);
   }

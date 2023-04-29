@@ -15,15 +15,14 @@ export class CommentService {
   }
 
   async getComment(id: number): Promise<IComment> {
-    return await this.commentRepository.findById(id);
+    return this.commentRepository.findById(id);
   }
 
-  async getComments(publicationId: number): Promise<IComment[]> {
-    return this.commentRepository.find(publicationId);
+  async getCommentsOfPublicationId(publicationId: number): Promise<IComment[]> {
+    return this.commentRepository.findCommentsOfPublication(publicationId);
   }
 
   async updateComment(id: number, dto: UpdateCommentDto): Promise<IComment> {
-    console.log("* Patch *", dto);
     return this.commentRepository.update(id, new CommentEntity(dto));
   }
 

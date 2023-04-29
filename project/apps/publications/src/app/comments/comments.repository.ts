@@ -22,14 +22,13 @@ export class CommentRepository {
     });
   }
 
-  public async find(publicationId: number): Promise<IComment[]> {
+  public async findCommentsOfPublication(publicationId: number): Promise<IComment[]> {
     return this.prisma.comments.findMany ({
       where: { publicationId }
     });
   }
 
   public async update(id: number, item: CommentEntity): Promise<IComment> {
-    console.log("* Patch Repo *", item);
     return this.prisma.comments.update({
       where: { id },
       data: { ...item.toObject() }
