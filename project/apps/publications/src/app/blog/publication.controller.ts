@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
 import { PublicationService } from './publication.service';
 import { CreatePublicationDto } from './dto/create-publication.dto';
 import { fillObject } from '@project/util/util-core';
@@ -15,7 +15,7 @@ export class PublicationController {
   }
 
   @Get('/:id')
-  async read(@Param('id', ParseIntPipe) id: number) {
+  async read(@Param('id') id: number) {
     const post = await this.publicationService.getPublication(id);
     return {...post};
   }
@@ -27,14 +27,14 @@ export class PublicationController {
   }
 
   @Patch('/:id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdatePublicationDto) {
+  async update(@Param('id') id: number, @Body() dto: UpdatePublicationDto) {
     const updatedPost = await this.publicationService.updatePublication(id, dto);
     return fillObject(PublicationRdo, updatedPost)
   }
 
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async destroy(@Param('id', ParseIntPipe) id: number) {
+  async destroy(@Param('id') id: number) {
     return this.publicationService.deletePublication(id);
   }
 }
