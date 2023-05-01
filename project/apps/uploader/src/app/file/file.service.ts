@@ -3,6 +3,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { ensureDir } from 'fs-extra';
 import { writeFile } from 'node:fs/promises';
+import dayjs from 'dayjs';
+import * as crypto from 'node:crypto';
+import { extension } from 'mime-types';
 
 @Injectable()
 export class FileService {
@@ -12,8 +15,14 @@ export class FileService {
   ) {}
 
   public async writeFile(file: Express.Multer.File): Promise<string> {
-    const uploadDirectoryPath = this.applicationConfig.uploadDirectory;
-    const destinationPath = `${uploadDirectoryPath}/${file.originalname}`;
+    const [ year, month ] = dayjs().format('YYYY MM').split(' ');
+    const { uploadDirectory } = this.applicationConfig;
+    const uploadDirectoryPath = `${uploadDirectory}/${year}/${month}`;
+
+    const filename = crypto.randomUUID();
+    const fileExtension = extension(file.mimetype);
+
+    const destinationPath = `${uploadDirectoryPath}/${filename}.${fileExtension}`;
 
     await ensureDir(uploadDirectoryPath);
     await writeFile(destinationPath, file.buffer);
