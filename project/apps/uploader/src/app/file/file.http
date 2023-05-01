@@ -1,4 +1,4 @@
-# Upload some file
+# Upload png file
 POST http://localhost:3333/api/files/upload
 Content-Type: multipart/form-data; boundary=----boundary
 
@@ -12,6 +12,7 @@ Content-Type: image/png
 
 ###
 
+# Upload txt file
 POST http://localhost:3333/api/files/upload
 Content-Type: multipart/form-data; boundary=----boundary
 
@@ -21,3 +22,9 @@ Content-Type: text/plain
 
 < ./text.txt
 ------boundary--
+
+
+###
+
+# Get txt file
+GET http://localhost:3333/static/text.txt

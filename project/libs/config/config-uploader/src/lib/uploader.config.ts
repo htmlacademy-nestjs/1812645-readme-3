@@ -13,16 +13,13 @@ export default registerAs('application', (): UploaderConfig => {
   const config: UploaderConfig = {
     environment: process.env.NODE_ENV,
     uploadDirectory: process.env.UPLOAD_DIRECTORY_PATH,
-    port: parseInt(process.env.POR || DEFAULT_PORT.toString(), 10),
+    port: parseInt(process.env.PORT || DEFAULT_PORT.toString(), 10),
   };
 
   const validationSchema = Joi.object<UploaderConfig>({
-    environment: Joi.string()
-      .valid('development', 'production', 'stage'),
-    port: Joi.number()
-      .port()
-      .default(DEFAULT_PORT),
-    uploadDirectory: Joi.string()
+    environment: Joi.string().valid('development', 'production', 'stage'),
+    uploadDirectory: Joi.string(),
+    port: Joi.number().port().default(DEFAULT_PORT)
   });
 
   const { error } = validationSchema.validate(config, { abortEarly: true });
