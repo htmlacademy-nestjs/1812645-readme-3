@@ -1,0 +1,23 @@
+# Upload some file
+POST http://localhost:3333/api/files/upload
+Content-Type: multipart/form-data; boundary=----boundary
+
+------boundary
+Content-Disposition: form-data; name="file"; filename="1.png"
+Content-Type: image/png
+
+< ./1.png
+------boundary--
+
+
+###
+
+POST http://localhost:3333/api/files/upload
+Content-Type: multipart/form-data; boundary=----boundary
+
+------boundary
+Content-Disposition: form-data; name="file"; filename="text.txt"
+Content-Type: text/plain
+
+< ./text.txt
+------boundary--
