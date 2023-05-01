@@ -26,5 +26,7 @@ Content-Type: text/plain
 
 ###
 
-# Get txt file
-GET http://localhost:3333/static/text.txt
+# Get file by ID
+GET http://localhost:3333/api/files/644fd291ca2678a155ed9637 HTTP/1.1
+
+###
