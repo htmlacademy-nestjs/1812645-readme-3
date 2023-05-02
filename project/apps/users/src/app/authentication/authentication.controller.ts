@@ -44,8 +44,9 @@ export class AuthenticationController {
   @HttpCode(HttpStatus.OK)
   public async login(@Body() dto: LoginUserDto) {
     const verifiedUser = await this.authService.verifyUser(dto);
-
-    return fillObject(LoggerUserRdo, verifiedUser)
+    const loggedUser = await this.authService.createUserToken(verifiedUser);
+    
+    return fillObject(LoggerUserRdo, Object.assign(verifiedUser, loggedUser));
   }
 
   @Get(':id')

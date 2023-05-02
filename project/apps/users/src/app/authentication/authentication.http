@@ -5,14 +5,14 @@ Content-Type: application/json
 {
   "name": "Mike",
   "email": "mail@mail.ru",
-  "password": "123",
+  "password": "1234567",
   "avatar": ""
 }
 
 ###
 
 # Get user by ID
-GET http://localhost:3000/api/auth/6439d7f7700351b166c01986 HTTP/1.1
+GET http://localhost:3000/api/auth/64518d0fee94a9268670264f HTTP/1.1
 Content-Type: application/json
 
 ###
@@ -22,6 +22,6 @@ POST http://localhost:3000/api/auth/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "mail1234@mail.ru",
-  "password": "123"
+  "email": "mail@mail.ru",
+  "password": "1234567"
 }
