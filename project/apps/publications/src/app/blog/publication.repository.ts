@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { PublicationEntity } from './entity/publication.entity';
 import { Publications } from '@prisma/client';
+import { PublicationQuery } from './query/publication-query';
 
 @Injectable()
 export class PublicationRepository implements CRUDRepository<PublicationEntity, number, Publications> {
@@ -36,13 +37,27 @@ export class PublicationRepository implements CRUDRepository<PublicationEntity, 
     });
   }
 
-  public async find(): Promise<Publications[]> {
+  public async find({limit, tags, sortDirection, page}: PublicationQuery): Promise<Publications[]> {
     return await this.prisma.publications.findMany({
+      where:{
+        tags: {
+          some: {
+            title: {
+              in: tags
+            }
+          }
+        }
+      },
+      take: limit,
       include: {
         tags: true,
         comments: true,
         likes: true
-      }
+      },
+      orderBy: [
+        { dateOfCreation: sortDirection }
+      ],
+      skip: page > 0 ? limit * (page - 1) : undefined,
     });
   }
 

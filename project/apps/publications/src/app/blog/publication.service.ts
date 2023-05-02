@@ -7,6 +7,7 @@ import { fillObject } from '@project/util/util-core';
 import { postRdoMap } from './rdo/post-rdo.map';
 import { UpdatePublicationDto } from './dto/update-publication.dto';
 import { Publications } from '@prisma/client';
+import { PublicationQuery } from './query/publication-query';
 
 @Injectable()
 export class PublicationService {
@@ -26,8 +27,8 @@ export class PublicationService {
     return convertPostFromJsonToObject(publication);
   }
 
-  async getPublications(): Promise<IPublication[]> {
-    const publications = await this.publicationRepository.find();
+  async getPublications(query: PublicationQuery): Promise<IPublication[]> {
+    const publications = await this.publicationRepository.find(query);
 
     return publications.map((publication) => {
       return convertPostFromJsonToObject(publication);

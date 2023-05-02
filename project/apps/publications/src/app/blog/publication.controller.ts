@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
 import { PublicationService } from './publication.service';
 import { CreatePublicationDto } from './dto/create-publication.dto';
 import { fillObject } from '@project/util/util-core';
 import { PublicationRdo } from './rdo/publication.rdo';
 import { UpdatePublicationDto } from './dto/update-publication.dto';
+import { PublicationQuery } from './query/publication-query';
 
 @Controller('publication')
 export class PublicationController {
@@ -21,8 +22,8 @@ export class PublicationController {
   }
 
   @Get('/')
-  async readAll() {
-    const posts = await this.publicationService.getPublications();
+  async readAll(@Query() query: PublicationQuery) {
+    const posts = await this.publicationService.getPublications(query);
     return fillObject(PublicationRdo, posts);
   }
 

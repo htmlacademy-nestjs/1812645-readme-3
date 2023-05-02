@@ -6,7 +6,7 @@ export class TagEntity implements ITag {
 
   constructor(tag: ITag) {
     this.id = tag.id;
-    this.title = tag.title;
+    this.title = tag.title.toLowerCase();
   }
 
   public toObject() {

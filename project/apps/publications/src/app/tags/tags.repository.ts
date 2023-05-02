@@ -10,11 +10,6 @@ export class TagsRepository implements CRUDRepository<TagEntity, number, ITag> {
 
   public async create(item: TagEntity): Promise<ITag> {
     return await this.prisma.tags.create({
-      /*
-      data: {
-        title: 'Выхухоль'
-      }
-      */
       data: { ...item.toObject() }
     });
   }
