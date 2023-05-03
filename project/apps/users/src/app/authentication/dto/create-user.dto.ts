@@ -22,6 +22,7 @@ export class CreateUserDto {
     description: 'User password',
     example: '123'
   })
+  @IsString()
   @Length(6, 12, { message: AUTH_USER_PASSWORD_NOT_VALID })
   public password: string;
 
