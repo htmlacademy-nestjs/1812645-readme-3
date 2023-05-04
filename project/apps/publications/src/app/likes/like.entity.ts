@@ -1,9 +1,9 @@
 import { ILike } from '@project/shared/shared-types';
 
 export class LikeEntity implements ILike {
-  id?: number
+  id: number
   userId: string;
-  publicationId?: number;
+  publicationId: number;
 
   constructor(entity: ILike) {
     this.id = entity.id;

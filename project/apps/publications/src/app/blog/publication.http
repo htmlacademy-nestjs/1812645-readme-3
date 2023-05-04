@@ -10,8 +10,7 @@ Content-Type: application/json
     "name": "Link to super salt.",
     "linkToVideo": "This is Super!"
   },
-  "comments": [],
-  "tags": []
+  "tags": ["шоки", "Игнор", "длиннющее_слово"]
 }
 
 ###
@@ -39,8 +38,8 @@ GET http://localhost:3333/api/publication/5 HTTP/1.1
 GET http://localhost:3333/api/publication HTTP/1.1
 
 ###
-# * Get all posts and filtres
-GET http://localhost:3333/api/publication?sortDirection=desc&limit=2&page=1 HTTP/1.1
+# Get all posts and filtres
+GET http://localhost:3333/api/publication?sortDirection=desc&tags=семья,работа&limit=2&page=1 HTTP/1.1
 
 
 ###
@@ -54,4 +53,4 @@ Content-Type: application/json
 
 ###
 # Delete the post by id
-DELETE http://localhost:3333/api/publication/4 HTTP/1.1
+DELETE http://localhost:3333/api/publication/6 HTTP/1.1

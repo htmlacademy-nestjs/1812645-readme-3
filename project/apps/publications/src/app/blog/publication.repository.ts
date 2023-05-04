@@ -3,19 +3,25 @@ import { PrismaService } from '../prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { PublicationEntity } from './entity/publication.entity';
 import { Publications } from '@prisma/client';
+import { PublicationQuery } from './query/publication-query';
 
 @Injectable()
 export class PublicationRepository implements CRUDRepository<PublicationEntity, number, Publications> {
   constructor(private readonly prisma: PrismaService) {}
 
   public async create(item: PublicationEntity): Promise<Publications> | null {
-    const {post, ...base} = item;
+    const {post, tags, comments, likes, ...base} = item;
 
     return await this.prisma.publications.create({
       data: {
         ...base,
         post: { ...post },
-        comments: {},
+        tags: {
+          connectOrCreate: prepareTags(tags)
+        },
+      },
+      include: {
+        tags: true
       }
     });
   }
@@ -24,16 +30,34 @@ export class PublicationRepository implements CRUDRepository<PublicationEntity, 
     return await this.prisma.publications.findFirst({
       where: { id },
       include: {
-        comments: true
+        tags: true,
+        comments: true,
+        likes: true
       }
     });
   }
 
-  public async find(): Promise<Publications[]> {
+  public async find({limit, tags, sortDirection, page}: PublicationQuery): Promise<Publications[]> {
     return await this.prisma.publications.findMany({
+      where:{
+        tags: {
+          some: {
+            title: {
+              in: tags
+            }
+          }
+        }
+      },
+      take: limit,
       include: {
-        comments: true
-      }
+        tags: true,
+        comments: true,
+        likes: true
+      },
+      orderBy: [
+        { dateOfCreation: sortDirection }
+      ],
+      skip: page > 0 ? limit * (page - 1) : undefined,
     });
   }
 
@@ -46,4 +70,13 @@ export class PublicationRepository implements CRUDRepository<PublicationEntity, 
       where: { id }
     });
   }
+}
+
+const prepareTags = (tags) => {
+  const arr = tags.map((tag) => ({
+    create: {title: tag.title},
+    where: {title: tag.title}
+    }
+  ));
+  return arr;
 }

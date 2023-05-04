@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePublicationDto } from './dto/create-publication.dto';
 import { PublicationEntity } from './entity/publication.entity';
 import { PublicationRepository } from './publication.repository';
 import { IPublication, PostsTypes } from '@project/shared/shared-types';
@@ -7,12 +6,13 @@ import { fillObject } from '@project/util/util-core';
 import { postRdoMap } from './rdo/post-rdo.map';
 import { UpdatePublicationDto } from './dto/update-publication.dto';
 import { Publications } from '@prisma/client';
+import { PublicationQuery } from './query/publication-query';
 
 @Injectable()
 export class PublicationService {
   constructor(private readonly publicationRepository: PublicationRepository) {}
 
-  async createPublication(dto: CreatePublicationDto) {
+  async createPublication(dto: IPublication) {
     const newPublicationEntity = new PublicationEntity(dto);
     return this.publicationRepository.create(newPublicationEntity);
   }
@@ -26,9 +26,8 @@ export class PublicationService {
     return convertPostFromJsonToObject(publication);
   }
 
-  async getPublications(): Promise<IPublication[]> {
-    const publications = await this.publicationRepository.find();
-
+  async getPublications(query: PublicationQuery): Promise<IPublication[]> {
+    const publications = await this.publicationRepository.find(query);
     return publications.map((publication) => {
       return convertPostFromJsonToObject(publication);
     });

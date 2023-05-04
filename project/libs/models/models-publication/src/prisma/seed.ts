@@ -16,9 +16,9 @@ async function fillDb() {
       },
       tags: {
         create: [
-          { title: 'Семья' },
-          { title: 'Работа' },
-          { title: 'Бега' }
+          { title: 'семья' },
+          { title: 'работа' },
+          { title: 'бега' }
         ]
       },
       comments: {
@@ -57,9 +57,11 @@ async function fillDb() {
       },
       tags: {
         create: [
-          { title: 'CS-GO' },
-          { title: 'Охота' }
-        ]
+          { title: 'охота' }
+        ],
+        connect: {
+          title: 'семья'
+        }
       },
     }
   });
@@ -76,7 +78,7 @@ async function fillDb() {
         authorOfQuoteId: 'Force overwrite.',
       },
       tags: {
-        create: { title: 'Котики' },
+        create: { title: 'котики' },
       },
     }
   });
@@ -104,11 +106,11 @@ async function fillDb() {
     where: { id: 5 },
     update: {},
     create: {
-      authorId: 'Luis Carroll',
+      authorId: '49',
       status: 'DRAFT',
       kindId: 5,
       post: {
-        description: 'Cheshire Cat',
+        description: 'Cheshire Cat, Luis Carroll',
         link: 'https://www.youtube.com/watch?v=QSDIziYBsHs',
       },
       comments: {
@@ -116,6 +118,20 @@ async function fillDb() {
           text: 'Мы согласовали!',
           userId: '13',
         },
+      }
+    }
+  });
+
+  await prisma.publications.upsert({
+    where: { id: 6 },
+    update: {},
+    create: {
+      authorId: '4979',
+      status: 'DRAFT',
+      kindId: 5,
+      post: {
+        description: 'Cheshire Cat, Luis Carroll',
+        link: 'https://www.youtube.com/watch?v=QSDIziYBsHs',
       }
     }
   });

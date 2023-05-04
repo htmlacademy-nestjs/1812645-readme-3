@@ -1,4 +1,4 @@
-import { IComment, PostsTypes } from '@project/shared/shared-types';
+import { IComment, ILike, PostsTypes } from '@project/shared/shared-types';
 import { Expose } from 'class-transformer';
 
 export class PublicationRdo {
@@ -28,4 +28,7 @@ export class PublicationRdo {
 
   @Expose()
   public comments: IComment[]
+
+  @Expose()
+  public likes: ILike[]
 }

@@ -1,0 +1,32 @@
+# Upload png file
+POST http://localhost:3333/api/files/upload
+Content-Type: multipart/form-data; boundary=----boundary
+
+------boundary
+Content-Disposition: form-data; name="file"; filename="1.png"
+Content-Type: image/png
+
+< ./1.png
+------boundary--
+
+
+###
+
+# Upload txt file
+POST http://localhost:3333/api/files/upload
+Content-Type: multipart/form-data; boundary=----boundary
+
+------boundary
+Content-Disposition: form-data; name="file"; filename="text.txt"
+Content-Type: text/plain
+
+< ./text.txt
+------boundary--
+
+
+###
+
+# Get file by ID
+GET http://localhost:3333/api/files/644fd291ca2678a155ed9637 HTTP/1.1
+
+###

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { TagsService } from './tags.service';
 import { fillObject } from '@project/util/util-core';
 import { TagRdo } from './rdo/tag.rdo';
@@ -15,13 +15,13 @@ export class TagsController {
   }
 
   @Get('/:id')
-  async read(@Param('id', ParseIntPipe) id: number) {
+  async read(@Param('id') id: number) {
     const tag = this.tagsService.getTag(id);
     return fillObject(TagRdo, tag);
   }
 
   @Get('/post/:id')
-  async readTagsOfPublication(@Param('id', ParseIntPipe) publicationId: number) {
+  async readTagsOfPublication(@Param('id') publicationId: number) {
     return this.tagsService.getTagsOfPublicationId(publicationId);
   }
 
@@ -31,12 +31,12 @@ export class TagsController {
   }
 
   @Patch('/:id')
-  async update(@Param('id', ParseIntPipe) id: number, @Body() dto: TagRdo) {
+  async update(@Param('id') id: number, @Body() dto: TagRdo) {
     return this.tagsService.updateTag(id, dto);
   }
 
   @Delete('/:id')
-  async delete(@Param('id', ParseIntPipe) id: number) {
+  async delete(@Param('id') id: number) {
     return this.tagsService.deleteTag(id);
   }
 }
