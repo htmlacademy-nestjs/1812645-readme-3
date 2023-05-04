@@ -1,17 +1,18 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query } from '@nestjs/common';
 import { PublicationService } from './publication.service';
-import { CreatePublicationDto } from './dto/create-publication.dto';
 import { fillObject } from '@project/util/util-core';
 import { PublicationRdo } from './rdo/publication.rdo';
 import { UpdatePublicationDto } from './dto/update-publication.dto';
 import { PublicationQuery } from './query/publication-query';
+import { TagsTransformToObjectArray } from '@project/shared/shared-pipes';
+import { IPublication } from '@project/shared/shared-types';
 
 @Controller('publication')
 export class PublicationController {
   constructor(private readonly publicationService: PublicationService) {}
 
   @Post('/')
-  async create(@Body() dto: CreatePublicationDto) {
+  async create(@Body(TagsTransformToObjectArray) dto: IPublication) {
     return await this.publicationService.createPublication(dto);
   }
 

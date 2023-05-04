@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePublicationDto } from './dto/create-publication.dto';
 import { PublicationEntity } from './entity/publication.entity';
 import { PublicationRepository } from './publication.repository';
 import { IPublication, PostsTypes } from '@project/shared/shared-types';
@@ -13,7 +12,7 @@ import { PublicationQuery } from './query/publication-query';
 export class PublicationService {
   constructor(private readonly publicationRepository: PublicationRepository) {}
 
-  async createPublication(dto: CreatePublicationDto) {
+  async createPublication(dto: IPublication) {
     const newPublicationEntity = new PublicationEntity(dto);
     return this.publicationRepository.create(newPublicationEntity);
   }
@@ -29,7 +28,6 @@ export class PublicationService {
 
   async getPublications(query: PublicationQuery): Promise<IPublication[]> {
     const publications = await this.publicationRepository.find(query);
-
     return publications.map((publication) => {
       return convertPostFromJsonToObject(publication);
     });

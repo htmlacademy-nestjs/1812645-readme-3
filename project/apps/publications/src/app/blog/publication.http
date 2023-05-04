@@ -10,7 +10,7 @@ Content-Type: application/json
     "name": "Link to super salt.",
     "linkToVideo": "This is Super!"
   },
-  "tags": [{"title": "шоки"}, {"title": "игнор"}]
+  "tags": ["шоки", "Игнор", "длиннющее_слово"]
 }
 
 ###
@@ -53,4 +53,4 @@ Content-Type: application/json
 
 ###
 # Delete the post by id
-DELETE http://localhost:3333/api/publication/1 HTTP/1.1
+DELETE http://localhost:3333/api/publication/6 HTTP/1.1

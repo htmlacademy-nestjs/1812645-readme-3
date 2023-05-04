@@ -106,11 +106,11 @@ async function fillDb() {
     where: { id: 5 },
     update: {},
     create: {
-      authorId: 'Luis Carroll',
+      authorId: '49',
       status: 'DRAFT',
       kindId: 5,
       post: {
-        description: 'Cheshire Cat',
+        description: 'Cheshire Cat, Luis Carroll',
         link: 'https://www.youtube.com/watch?v=QSDIziYBsHs',
       },
       comments: {
@@ -118,6 +118,20 @@ async function fillDb() {
           text: 'Мы согласовали!',
           userId: '13',
         },
+      }
+    }
+  });
+
+  await prisma.publications.upsert({
+    where: { id: 6 },
+    update: {},
+    create: {
+      authorId: '4979',
+      status: 'DRAFT',
+      kindId: 5,
+      post: {
+        description: 'Cheshire Cat, Luis Carroll',
+        link: 'https://www.youtube.com/watch?v=QSDIziYBsHs',
       }
     }
   });
