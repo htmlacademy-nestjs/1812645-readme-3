@@ -8,18 +8,20 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { LoggerUserRdo } from './rdo/logger-user.rdo';
 import { MongoIdValidationPipe } from '@project/shared/shared-pipes';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { NotifyService } from '../notify/notify.service';
 
 @ApiTags('authentication')
 @Controller('auth')
 export class AuthenticationController {
   constructor(
-    private readonly authService: AuthenticationService
+    private readonly authService: AuthenticationService,
+    private readonly notifyService: NotifyService,
   ) {}
 
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new user has been successfully created.',
-    type: UserRdo
+    type: UserRdo,
   })
   @ApiResponse({
     status: HttpStatus.CONFLICT,
@@ -28,6 +30,8 @@ export class AuthenticationController {
   @Post('register')
   public async crate(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
+    const { email, name } = newUser;
+    await this.notifyService.registerSubscriber({ email, name });
 
     return fillObject(UserRdo, newUser);
   }
