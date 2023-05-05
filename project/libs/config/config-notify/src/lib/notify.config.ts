@@ -57,8 +57,8 @@ export default registerAs('application', (): NotifyConfig => {
     mail: {
       host: process.env.MAIL_SMTP_HOST,
       port: parseInt(process.env.MAIL_SMTP_PORT ?? DEFAULT_SMTP_PORT.toString(), 10),
-      user: process.env.MAIL_USER_NAME,
-      password: process.env.MAIL_USER_PASSWORD,
+      user: process.env.MAIL_SMTP_NAME,
+      password: process.env.MAIL_SMTP_PASSWORD,
       from: process.env.MAIL_FROM,
     }
   };
