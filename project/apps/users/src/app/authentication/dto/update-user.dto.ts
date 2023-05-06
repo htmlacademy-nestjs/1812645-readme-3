@@ -2,7 +2,13 @@ import { ApiProperty } from '@nestjs/swagger';
 import { AUTH_USER_EMAIL_NOT_VALID, AUTH_USER_NAME_NOT_VALID, AUTH_USER_PASSWORD_NOT_VALID } from '../authentication.constant';
 import { IsEmail, IsString, Length } from 'class-validator';
 
-export class CreateUserDto {
+export class UpdateUserDto {
+  @ApiProperty({
+    description: 'User id',
+    example: '1254'
+  })
+  public id: string;
+
   @ApiProperty({
     description: 'User name',
     example: 'Mike'

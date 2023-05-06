@@ -8,6 +8,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { BlogUserRepository } from '../blog-user/blog-user.repository';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -33,12 +34,9 @@ export class AuthenticationService {
       role: UserRole.User,
       registrationDate: dayjs().toDate()
     }
+    const userEntity = await new BlogUserEntity(blogUser).setPassword(password);
 
-    const userEntity = await new BlogUserEntity(blogUser)
-      .setPassword(password);
-
-    return this.blogUserRepository
-      .create(userEntity);
+    return this.blogUserRepository.create(userEntity);
   }
 
   public async verifyUser(dto: LoginUserDto) {
@@ -66,6 +64,25 @@ export class AuthenticationService {
     }
 
     return existUser;
+  }
+
+  public async updateUser(id: string, dto: UpdateUserDto) {
+    const {name, email, password, avatar=''} = dto;
+    const existUser = await this.blogUserRepository.findById(id);
+
+    if(!existUser) {
+      throw new NotFoundException(AUTH_USER_NOT_FOUND);
+    }
+
+    const blogUser = {
+      email, name, avatar,
+      passwordHash: '',
+      role: UserRole.User,
+      registrationDate: dayjs().toDate(),
+    }
+    const userEntity = await new BlogUserEntity(blogUser).setPassword(password);
+
+    return this.blogUserRepository.update(id, userEntity);
   }
 
   public async createUserToken(user: IUser) {

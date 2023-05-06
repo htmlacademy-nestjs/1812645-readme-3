@@ -27,7 +27,7 @@ export class BlogUserRepository implements CRUDRepository<BlogUserEntity, string
 
   public async update(id: string, item: BlogUserEntity): Promise<IUser> {
     return this.blogUserModel
-      .findByIdAndUpdate({id}, item.toObject(), {new: true})
+      .findByIdAndUpdate({_id: id}, item.toObject(), {new: true})
       .exec();
   }
 

@@ -20,4 +20,12 @@ export class NotifyService {
       { ...dto }
     );
   }
+
+  public async updatedSubscriber(dto: CreateSubscriberDto) {
+    return this.rabbitClient.publish<CreateSubscriberDto> (
+      this.rabbiOptions.exchange,
+      RabbitRouting.UpdateSubscriber,
+      { ...dto }
+    );
+  }
 }
