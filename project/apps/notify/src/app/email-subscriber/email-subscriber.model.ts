@@ -10,10 +10,16 @@ const SUBSCRIBERS_COLLECTION_NAME = 'email-subscribers';
 })
 export class EmailSubscriberModel extends Document implements  ISubscriber {
   @Prop()
+  public userId: string;
+
+  @Prop()
   public email: string;
 
   @Prop()
   public name: string;
+
+  @Prop()
+  public subscribeToPublications: boolean;
 }
 
 export const EmailSubscriberSchema = SchemaFactory.createForClass(EmailSubscriberModel);
