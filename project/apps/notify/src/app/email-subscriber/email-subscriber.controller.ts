@@ -18,7 +18,18 @@ export class EmailSubscriberController {
     queue: 'readme.notify',
   })
   public async create(subscriber: CreateSubscriberDto) {
+    console.log('* Notify create *', subscriber);
     this.subscriberService.addSubscriber(subscriber);
     this.mailService.sendNotifyNewSubscriber(subscriber);
+  }
+
+  @RabbitSubscribe({
+    exchange: 'readme.notify',
+    routingKey: RabbitRouting.UpdateSubscriber,
+    queue: 'notify.updateSubscriber',
+  })
+  public async update(subscriber: CreateSubscriberDto) {
+    console.log('* Notify update *', subscriber);
+    this.subscriberService.updateSubscriber(subscriber);
   }
 }
