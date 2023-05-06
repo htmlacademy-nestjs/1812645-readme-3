@@ -15,10 +15,10 @@ export class EmailSubscriberController {
   @RabbitSubscribe({
     exchange: 'readme.notify',
     routingKey: RabbitRouting.AddSubscriber,
-    queue: 'readme.notify',
+    queue: 'readme.notify-1',
+    createQueueIfNotExists: true
   })
   public async create(subscriber: CreateSubscriberDto) {
-    console.log('* Notify create *', subscriber);
     this.subscriberService.addSubscriber(subscriber);
     this.mailService.sendNotifyNewSubscriber(subscriber);
   }
@@ -26,10 +26,11 @@ export class EmailSubscriberController {
   @RabbitSubscribe({
     exchange: 'readme.notify',
     routingKey: RabbitRouting.UpdateSubscriber,
-    queue: 'notify.updateSubscriber',
+    queue: 'readme.notify-2',
+    createQueueIfNotExists: true
   })
   public async update(subscriber: CreateSubscriberDto) {
-    console.log('* Notify update *', subscriber);
     this.subscriberService.updateSubscriber(subscriber);
+    this.mailService.sendNotifyChangeSubscriber(subscriber);
   }
 }
