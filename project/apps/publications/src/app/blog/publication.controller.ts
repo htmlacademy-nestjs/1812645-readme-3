@@ -6,10 +6,14 @@ import { UpdatePublicationDto } from './dto/update-publication.dto';
 import { PublicationQuery } from './query/publication-query';
 import { TagsTransformToObjectArray } from '@project/shared/shared-pipes';
 import { IPublication } from '@project/shared/shared-types';
+import { NotifyService } from '../notify/notify.service';
 
 @Controller('publication')
 export class PublicationController {
-  constructor(private readonly publicationService: PublicationService) {}
+  constructor(
+    private readonly publicationService: PublicationService,
+    private readonly notifyService: NotifyService,
+  ) {}
 
   @Post('/')
   async create(@Body(TagsTransformToObjectArray) dto: IPublication) {
@@ -26,6 +30,13 @@ export class PublicationController {
   async readAll(@Query() query: PublicationQuery) {
     const posts = await this.publicationService.getPublications(query);
     return fillObject(PublicationRdo, posts);
+  }
+
+  @Get('/mailing/:date')
+  async mailingNewPublications(@Param() date: string) {
+    const newPublications = await this.publicationService.getPublicationsForDate(date);
+    await this.notifyService.mailingNewPublications (newPublications);
+    return fillObject(PublicationRdo, newPublications);
   }
 
   @Patch('/:id')

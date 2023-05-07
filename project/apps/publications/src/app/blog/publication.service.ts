@@ -33,6 +33,13 @@ export class PublicationService {
     });
   }
 
+  async getPublicationsForDate(date: string): Promise<IPublication[]> {
+    const publications = await this.publicationRepository.findForDate(date);
+    return publications.map((publication) => {
+      return convertPostFromJsonToObject(publication);
+    });
+  }
+
   async updatePublication(_id: number, _dto: UpdatePublicationDto): Promise<IPublication> {
     throw new Error('Not implemented…');
   }

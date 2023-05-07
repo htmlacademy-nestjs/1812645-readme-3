@@ -1,5 +1,5 @@
 # Create a new publication
-POST http://localhost:3333/api/publication HTTP/1.1
+POST http://localhost:3000/api/publication HTTP/1.1
 Content-Type: application/json
 
 {
@@ -15,36 +15,40 @@ Content-Type: application/json
 
 ###
 # 1 Get video post by id
-GET http://localhost:3333/api/publication/1 HTTP/1.1
+GET http://localhost:3000/api/publication/1 HTTP/1.1
 
 ###
 # 2 Get text post by id
-GET http://localhost:3333/api/publication/2 HTTP/1.1
+GET http://localhost:3000/api/publication/2 HTTP/1.1
 
 ###
 # 3 Get quote post by id
-GET http://localhost:3333/api/publication/3 HTTP/1.1
+GET http://localhost:3000/api/publication/3 HTTP/1.1
 
 ###
 # 4 Get photo post by id
-GET http://localhost:3333/api/publication/4 HTTP/1.1
+GET http://localhost:3000/api/publication/4 HTTP/1.1
 
 ###
 # 5 Get link post by id
-GET http://localhost:3333/api/publication/5 HTTP/1.1
+GET http://localhost:3000/api/publication/5 HTTP/1.1
 
 ###
 # Get all posts
-GET http://localhost:3333/api/publication HTTP/1.1
+GET http://localhost:3000/api/publication HTTP/1.1
+
+###
+# Sending NEW Publications to users who have subscribed to the newsletter
+GET http://localhost:3000/api/publication/mailing/2023-05-04 HTTP/1.1
 
 ###
 # Get all posts and filtres
-GET http://localhost:3333/api/publication?sortDirection=desc&tags=семья,работа&limit=2&page=1 HTTP/1.1
+GET http://localhost:3000/api/publication?sortDirection=desc&tags=семья,работа&limit=2&page=1 HTTP/1.1
 
 
 ###
 # * Patch a publication
-PATCH http://localhost:3333/api/publication/1 HTTP/1.1
+PATCH http://localhost:3000/api/publication/1 HTTP/1.1
 Content-Type: application/json
 
 {
@@ -53,4 +57,4 @@ Content-Type: application/json
 
 ###
 # Delete the post by id
-DELETE http://localhost:3333/api/publication/6 HTTP/1.1
+DELETE http://localhost:3000/api/publication/6 HTTP/1.1
