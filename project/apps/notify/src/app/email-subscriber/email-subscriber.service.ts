@@ -22,6 +22,11 @@ export class EmailSubscriberService {
       .create(new EmailSubscriberEntity(subscriber));
   }
 
+  public async getSubscribersOnNewPublications() {
+    const subscribers = await this.emailSubscriberRepository.find();
+    return subscribers;
+  }
+
   public async updateSubscriber(subscriber: CreateSubscriberDto) {
     const { email } = subscriber;
     const existsSubscriber = await this.emailSubscriberRepository.findByEmail(email);
