@@ -1,4 +1,4 @@
-import { Controller, Body, Post, Param, Get, HttpStatus, HttpCode, UseGuards } from '@nestjs/common';
+import { Controller, Body, Post, Param, Get, HttpStatus, HttpCode, UseGuards, Patch } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthenticationService } from './authentication.service';
 import { UserRdo } from './rdo/user.rdo';
@@ -8,18 +8,21 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { LoggerUserRdo } from './rdo/logger-user.rdo';
 import { MongoIdValidationPipe } from '@project/shared/shared-pipes';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { NotifyService } from '../notify/notify.service';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @ApiTags('authentication')
 @Controller('auth')
 export class AuthenticationController {
   constructor(
-    private readonly authService: AuthenticationService
+    private readonly authService: AuthenticationService,
+    private readonly notifyService: NotifyService,
   ) {}
 
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'The new user has been successfully created.',
-    type: UserRdo
+    type: UserRdo,
   })
   @ApiResponse({
     status: HttpStatus.CONFLICT,
@@ -28,6 +31,11 @@ export class AuthenticationController {
   @Post('register')
   public async crate(@Body() dto: CreateUserDto) {
     const newUser = await this.authService.register(dto);
+    const { _id, email, name } = newUser;
+
+    await this.notifyService.registerSubscriber({
+      userId: _id, email, name, subscribeToPublications: dto.subscribeToPublications
+    });
 
     return fillObject(UserRdo, newUser);
   }
@@ -48,6 +56,27 @@ export class AuthenticationController {
     const loggedUser = await this.authService.createUserToken(verifiedUser);
 
     return fillObject(LoggerUserRdo, Object.assign(verifiedUser, loggedUser));
+  }
+
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'User updated.',
+    type: UserRdo
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'User not found'
+  })
+  @Patch('/:id')
+  async update(@Param('id') id: string, @Body() dto: UpdateUserDto) {
+    const updatedUser = await this.authService.updateUser(id, dto);
+
+    if(updatedUser) {
+      const { email, name, subscribeToPublications } = dto;
+      await this.notifyService.updatedSubscriber({ userId: id, email, name, subscribeToPublications });
+    }
+
+    return fillObject(UserRdo, updatedUser);
   }
 
   @ApiResponse({

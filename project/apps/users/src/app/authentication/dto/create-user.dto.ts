@@ -31,4 +31,10 @@ export class CreateUserDto {
     example: 'picture.jpg'
   })
   public avatar?: string;
+
+  @ApiProperty({
+    description: 'Subscribe to publications.',
+    example: 'true'
+  })
+  public subscribeToPublications?: boolean;
 }
