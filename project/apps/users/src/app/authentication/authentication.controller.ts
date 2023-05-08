@@ -1,15 +1,16 @@
-import { Controller, Body, Post, Param, Get, HttpStatus, HttpCode, UseGuards, Patch } from '@nestjs/common';
+import { Controller, Body, Post, Param, Get, HttpStatus, HttpCode, UseGuards, Patch, Req } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthenticationService } from './authentication.service';
 import { UserRdo } from './rdo/user.rdo';
 import { CreateUserDto } from './dto/create-user.dto';
 import { fillObject } from '@project/util/util-core';
-import { LoginUserDto } from './dto/login-user.dto';
 import { LoggerUserRdo } from './rdo/logger-user.rdo';
 import { MongoIdValidationPipe } from '@project/shared/shared-pipes';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { NotifyService } from '../notify/notify.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { LocalAuthGuard } from './guards/local-auth.guard';
+import { RequestWithUser } from '@project/shared/shared-types';
 
 @ApiTags('authentication')
 @Controller('auth')
@@ -49,13 +50,11 @@ export class AuthenticationController {
     status: HttpStatus.UNAUTHORIZED,
     description: 'Password or Login is wrong.'
   })
-  @Post('login')
   @HttpCode(HttpStatus.OK)
-  public async login(@Body() dto: LoginUserDto) {
-    const verifiedUser = await this.authService.verifyUser(dto);
-    const loggedUser = await this.authService.createUserToken(verifiedUser);
-
-    return fillObject(LoggerUserRdo, Object.assign(verifiedUser, loggedUser));
+  @UseGuards(LocalAuthGuard)
+  @Post('login')
+  public async login(@Req() { user }: RequestWithUser) {
+    return this.authService.createUserToken(user);
   }
 
   @ApiResponse({
