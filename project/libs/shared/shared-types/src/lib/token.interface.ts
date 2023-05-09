@@ -1,4 +1,4 @@
-export interface Token {
+export interface IToken {
   id?: string;
   tokenId: string;
   createdAt: Date;
