@@ -41,3 +41,17 @@ Content-Type: application/json
   "email": "mail@mail.ru",
   "password": "1234567"
 }
+
+###
+
+# Get new JWT pair
+POST http://localhost:3000/api/auth/refresh HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NDU2YWZkZjkyYjkxYmYyMWQyMTZhNzIiLCJlbWFpbCI6Im1haWxAbWFpbC5ydSIsIm5hbWUiOiJNaWtlIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODM3MTAyMzYsImV4cCI6MTY4MzcxMDgzNn0.4EW5cP2yot0V-ooCUQu7ifz7u3Wkvs8z1EfExr8IiUw
+
+###
+
+# Check user token
+POST http://localhost:3000/api/auth/check HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NDU2YWZkZjkyYjkxYmYyMWQyMTZhNzIiLCJlbWFpbCI6Im1haWxAbWFpbC5ydSIsIm5hbWUiOiJNaWtlIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODM3MTAzMjAsImV4cCI6MTY4MzcxMDkyMH0.LCY8QW01WAAjFzNw5oeuYseZVBzGGEXRcHh8-SG_g4k
+
+###

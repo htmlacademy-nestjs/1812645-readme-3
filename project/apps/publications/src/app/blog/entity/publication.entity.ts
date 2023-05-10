@@ -25,7 +25,7 @@ export class PublicationEntity implements IEntity<PublicationEntity>, IPublicati
     this.dateOfCreation = new Date();
     this.dateOfPublication = (this.status === PublicationStatus.PUBLISHED) ? new Date() : null;
     this.kindId = publication.kindId;
-    this.post = newPost;    // TODO через ... !!!
+    this.post = newPost;
     this.tags = [ ...publication.tags ];
   }
 
