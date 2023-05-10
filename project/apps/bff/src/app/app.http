@@ -1,5 +1,5 @@
 # Login user by email and password
-POST http://localhost:3333/api/users/login HTTP/1.1
+POST http://localhost:5000/api/users/login HTTP/1.1
 Content-Type: application/json
 
 {
@@ -10,7 +10,24 @@ Content-Type: application/json
 ###
 
 # Get new JWT pair
-POST http://localhost:3333/api/users/refresh HTTP/1.1
+POST http://localhost:5000/api/users/refresh HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NDU2YWZkZjkyYjkxYmYyMWQyMTZhNzIiLCJlbWFpbCI6Im1haWxAbWFpbC5ydSIsIm5hbWUiOiJNaWtlIiwicm9sZSI6InVzZXIiLCJ0b2tlbklkIjoiZjhhZWMyMmMtNjA4Yi00MjJjLTkwNDktZmI0NDQxMTIzMmNjIiwiaWF0IjoxNjgzNjI4NzY3LCJleHAiOjE2ODYyMjA3Njd9.ib8KUTZQnFhpWf9cLV9da73BC3Lhpf6SsDg7EmPG55I
+
+###
+
+# Create a new post
+POST http://localhost:5000/api/publications HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NDU2YWZkZjkyYjkxYmYyMWQyMTZhNzIiLCJlbWFpbCI6Im1haWxAbWFpbC5ydSIsIm5hbWUiOiJNaWtlIiwicm9sZSI6InVzZXIiLCJpYXQiOjE2ODM3MjI1ODYsImV4cCI6MTY4MzcyMzE4Nn0.ix0AYkT2GsF863dYsvooaIBWb1GyAQ0Ig2VYfstRtbc
+Content-Type: application/json
+
+{
+  "status": "DRAFT",
+  "kindId": 1,
+  "post": {
+    "name": "Привет из БФФ!.",
+    "linkToVideo": "This is Super!"
+  },
+  "tags": ["BFF"]
+}
 
 ###
