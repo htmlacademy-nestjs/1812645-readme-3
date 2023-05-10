@@ -10,7 +10,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { NotifyService } from '../notify/notify.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { RequestWithUser } from '@project/shared/shared-types';
+import { RequestWithTokenPayload, RequestWithUser } from '@project/shared/shared-types';
 import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 
 @ApiTags('authentication')
@@ -105,5 +105,11 @@ export class AuthenticationController {
     const existUser = await this.authService.getUser(id);
 
     return fillObject(UserRdo, existUser);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('check')
+  public async checkToken(@Req() { user: payload }: RequestWithTokenPayload) {
+    return payload;
   }
 }
