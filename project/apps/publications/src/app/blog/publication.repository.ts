@@ -10,8 +10,6 @@ export class PublicationRepository implements CRUDRepository<PublicationEntity, 
   constructor(private readonly prisma: PrismaService) {}
 
   public async create(item: PublicationEntity): Promise<Publications> | null {
-    // TODO comments, likes не нужны, но чтобы выделить post, tags, выделяю и их
-    // в результате имею предупреждение. Как обойти это?
     const {post, tags, comments, likes, ...base} = item;
 
     return await this.prisma.publications.create({
@@ -40,10 +38,7 @@ export class PublicationRepository implements CRUDRepository<PublicationEntity, 
   }
 
   public async findForDate(date: string) {
-    console.log('* Repo *', date);
-    // TODO Тут проблемы с переводом из String в формат Даты....
     const newDate = new Date('2023-01-01');
-    console.log('* Repo *', newDate);
     return await this.prisma.publications.findMany({
       where: {
         dateOfCreation: {
@@ -89,10 +84,9 @@ export class PublicationRepository implements CRUDRepository<PublicationEntity, 
 }
 
 const prepareTags = (tags) => {
-  const arr = tags.map((tag) => ({
+  return tags.map((tag) => ({
     create: {title: tag.title},
     where: {title: tag.title}
     }
   ));
-  return arr;
 }

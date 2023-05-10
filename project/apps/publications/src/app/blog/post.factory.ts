@@ -10,8 +10,6 @@ enum KindOfPosts {
   photo = 4,
   link = 5,
 }
-// TODO добавить проверку переданного ключа для Post
-// type Key<K> = [K] extends (K extends Keys ? [K] : never) ? K : never;
 
 export class PostFactory {
   public static createPost<K extends KeysOfPostEntityMap>(k: number, post: PostsTypes): ExtractInstanceType<K> {
